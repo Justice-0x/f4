@@ -22,14 +22,15 @@
     justify-content:center;
     gap:4vw;
     opacity:0;
-    animation:fadeIn 4s ease-in-out forwards;
+    animation:fadeIn 8s ease-in-out forwards;
   }
   .fade-container img{
     width:32vw;
     border-radius:1rem;
     box-shadow:0 0 30px rgba(0,255,224,0.35);
-    transform:translateY(30px);
-    animation:floatUp 5s ease-in-out forwards;
+    transform:translateY(40px);
+    animation:floatUp 8s ease-in-out forwards;
+    object-fit:cover;
   }
   @keyframes fadeIn{to{opacity:1;}}
   @keyframes floatUp{to{transform:translateY(0);}}
@@ -39,11 +40,11 @@
     left:50%;
     transform:translate(-50%,-50%);
     opacity:0;
-    animation:showLogin 1s ease-in-out 4.5s forwards;
+    animation:showLogin 1.5s ease-in-out 8s forwards;
     background:rgba(0,20,30,0.9);
     padding:2rem 3rem;
     border-radius:1rem;
-    box-shadow:0 0 40px rgba(0,255,224,0.2);
+    box-shadow:0 0 40px rgba(0,255,224,0.25);
     text-align:center;
   }
   @keyframes showLogin{to{opacity:1;}}
@@ -66,7 +67,9 @@
     color:#00121f;
     font-weight:600;
     cursor:pointer;
+    transition:all .2s ease;
   }
+  button:hover{background:#00d0b2;box-shadow:0 0 10px #00ffe0;}
   .shake{animation:shake 0.4s;}
   @keyframes shake{
     0%,100%{transform:translate(-50%,-50%) translateX(0);}
@@ -85,8 +88,8 @@
 </head>
 <body>
   <div class="fade-container">
-    <img src="https://i.imgur.com/ssO7yDk.jpeg" alt="Daikin VRV Unit">
-    <img src="https://i.imgur.com/zxDEwv3.jpeg" alt="Control Board">
+    <img src="/public/vrv.jpg" alt="Daikin VRV Unit">
+    <img src="/public/board.jpg" alt="Control Board">
   </div>
   <div class="login-container" id="login">
     <h2>🔐 MyGuy.dev Access</h2>
@@ -102,9 +105,9 @@
     const pass=document.getElementById('pass').value.trim().toLowerCase();
     const box=document.getElementById('login');
     if(pass==='myguy'){
-      window.location.href='tech.html';
+      window.location.href='/tech.html';
     }else if(pass==='jude'){
-      window.location.href='jude.html';
+      window.location.href='/jude.html';
     }else{
       box.classList.add('shake');
       setTimeout(()=>box.classList.remove('shake'),500);
