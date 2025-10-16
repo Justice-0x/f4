@@ -1,118 +1,269 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F4 Cluster Banger – MyGuy.dev</title>
-<style>
-  body {
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    background:radial-gradient(circle at 20% 20%,#00121f,#000814 80%);
-    color:#e0f7ff;
-    overflow:hidden;
-  }
-  .fade-container{
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;left:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:4vw;
-    opacity:0;
-    animation:fadeIn 8s ease-in-out forwards;
-  }
-  .fade-container img{
-    width:32vw;
-    border-radius:1rem;
-    box-shadow:0 0 30px rgba(0,255,224,0.35);
-    transform:translateY(40px);
-    animation:floatUp 8s ease-in-out forwards;
-    object-fit:cover;
-  }
-  @keyframes fadeIn{to{opacity:1;}}
-  @keyframes floatUp{to{transform:translateY(0);}}
-  .login-container{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    opacity:0;
-    animation:showLogin 1.5s ease-in-out 8s forwards;
-    background:rgba(0,20,30,0.9);
-    padding:2rem 3rem;
-    border-radius:1rem;
-    box-shadow:0 0 40px rgba(0,255,224,0.25);
-    text-align:center;
-  }
-  @keyframes showLogin{to{opacity:1;}}
-  input[type=password]{
-    padding:0.7rem 1rem;
-    border:none;
-    border-radius:8px;
-    width:80%;
-    margin-top:1rem;
-    background:#001d2a;
-    color:#00ffe0;
-    font-size:1.1rem;
-  }
-  button{
-    margin-top:1rem;
-    padding:0.7rem 2rem;
-    border:none;
-    border-radius:8px;
-    background:#00ffe0;
-    color:#00121f;
-    font-weight:600;
-    cursor:pointer;
-    transition:all .2s ease;
-  }
-  button:hover{background:#00d0b2;box-shadow:0 0 10px #00ffe0;}
-  .shake{animation:shake 0.4s;}
-  @keyframes shake{
-    0%,100%{transform:translate(-50%,-50%) translateX(0);}
-    25%{transform:translate(-50%,-50%) translateX(-10px);}
-    75%{transform:translate(-50%,-50%) translateX(10px);}
-  }
-  footer{
-    position:absolute;
-    bottom:1rem;
-    width:100%;
-    text-align:center;
-    font-size:0.8rem;
-    color:#008d75;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>F4 RootCause — MyGuy</title>
+  <style>
+    :root {
+      --accent: #00f2d1;
+      --bg: #071620;
+      --card: #0f2a34;
+      --glass: rgba(6,18,22,0.85);
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: linear-gradient(180deg, #03131a 0%, #04202a 100%);
+      color: #e6f7f6;
+      overflow: hidden;
+    }
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .splash {
+      position: relative;
+      width: min(1200px, 95vw);
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      perspective: 900px;
+    }
+    .card {
+      position: absolute;
+      width: 46%;
+      height: 260px;
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55), 0 0 30px rgba(0,242,209,0.08) inset;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.05));
+      backdrop-filter: blur(6px);
+    }
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(0.98) saturate(0.95);
+    }
+    .fly-left {
+      transform: translateX(-220px) rotate(-8deg) scale(0.9);
+      opacity: 0;
+    }
+    .fly-right {
+      transform: translateX(220px) rotate(8deg) scale(0.9);
+      opacity: 0;
+    }
+    .show {
+      animation: flyin 0.9s cubic-bezier(0.22,0.9,0.33,1) forwards;
+    }
+    .show-delayed {
+      animation: flyin 0.9s cubic-bezier(0.22,0.9,0.33,1) 0.45s forwards;
+    }
+    @keyframes flyin {
+      from {
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+      }
+      50% {
+        transform: translateY(-6px) scale(1.02);
+      }
+      to {
+        transform: translateY(0) rotate(0) scale(1);
+        opacity: 1;
+      }
+    }
+    .badge {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46%;
+      height: 260px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(0,242,209,0.06), rgba(0,120,170,0.04));
+      box-shadow: 0 30px 80px rgba(0,120,160,0.08);
+      opacity: 0;
+      transform: scale(0.98);
+      animation: badge-in 0.9s 0.8s forwards;
+    }
+    @keyframes badge-in {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4,9,12,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .modal-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal {
+      width: min(520px, 92vw);
+      background: var(--glass);
+      border-radius: 14px;
+      padding: 28px;
+      color: #eaf6f4;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+    }
+    .modal h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      color: #dffdf6;
+    }
+    .input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.15);
+      color: #eaf6f4;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #082226;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+    .small {
+      opacity: 0.85;
+      font-size: 0.9rem;
+      color: #bfe7dd;
+      margin-top: 10px;
+    }
+    .topbar {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+    }
+    .brand {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.6px;
+    }
+    @media (max-width: 880px) {
+      .splash {
+        flex-direction: column;
+        height: auto;
+      }
+      .card {
+        position: relative;
+        width: 86%;
+        height: 200px;
+      }
+      .badge {
+        width: 86%;
+        height: 200px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="fade-container">
-    <img src="/public/vrv.jpg" alt="Daikin VRV Unit">
-    <img src="/public/board.jpg" alt="Control Board">
+  <div class="topbar">
+    <div class="brand">MyGuy.dev — F4 Tech Deck</div>
+    <div style="color:#88f0e0;opacity:.85">System 3</div>
   </div>
-  <div class="login-container" id="login">
-    <h2>🔐 MyGuy.dev Access</h2>
-    <p>Enter Access Code</p>
-    <input type="password" id="pass" placeholder="Enter pass">
-    <br>
-    <button onclick="checkPass()">Unlock</button>
-  </div>
-  <footer>© MyGuy.dev Field Intelligence System 2025 – All Rights Reserved</footer>
 
-<script>
-  function checkPass(){
-    const pass=document.getElementById('pass').value.trim().toLowerCase();
-    const box=document.getElementById('login');
-    if(pass==='myguy'){
-      window.location.href='/tech.html';
-    }else if(pass==='jude'){
-      window.location.href='/jude.html';
-    }else{
-      box.classList.add('shake');
-      setTimeout(()=>box.classList.remove('shake'),500);
+  <main class="stage">
+    <div class="splash" aria-hidden="true">
+      <div class="card fly-left" id="leftCard"><img id="leftImg" src="images/vrv.jpg" alt="VRV view"></div>
+      <div class="badge"><h1>VRV Cluster Diagnostics</h1></div>
+      <div class="card fly-right" id="rightCard"><img id="rightImg" src="images/vrv1.jpg" alt="VRV alternate view"></div>
+    </div>
+    <div class="small" style="margin-top:22px;color:#bfe7dd">Drop ZIPs or go to Tech view after unlocking</div>
+  </main>
+
+  <div id="modalBack" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h2>🔒 MyGuy.dev Access</h2>
+      <div>Enter access code to continue</div>
+      <input id="passInput" class="input" placeholder="Enter pass" autocomplete="off" />
+      <button id="unlockBtn" class="btn">Unlock</button>
+      <div id="errMsg" style="color:#ff9da2;margin-top:10px;display:none">Incorrect code</div>
+      <div class="small">Passwords: tech & boss (case-insensitive)</div>
+    </div>
+  </div>
+
+  <script>
+    const images = {
+      left: 'images/vrv.jpg',
+      right: 'images/vrv1.jpg'
+    };
+    const PASS_LIST = ['jude', 'boss123'];
+
+    document.getElementById('leftImg').src = images.left;
+    document.getElementById('rightImg').src = images.right;
+
+    function startSplash() {
+      const left = document.getElementById('leftCard');
+      const right = document.getElementById('rightCard');
+      left.classList.remove('fly-left');
+      left.classList.add('show');
+      right.classList.remove('fly-right');
+      right.classList.add('show-delayed');
     }
-  }
-</script>
+    function showModalAfter(ms = 4500) {
+      setTimeout(()=>{
+        document.getElementById('modalBack').classList.add('show');
+        document.getElementById('modalBack').ariaHidden = 'false';
+        setTimeout(()=>document.getElementById('passInput').focus(), 180);
+      }, ms);
+    }
+    function tryUnlock() {
+      const v = (document.getElementById('passInput').value || '').trim().toLowerCase();
+      const ok = PASS_LIST.some(p=>p.toLowerCase() === v);
+      const errEl = document.getElementById('errMsg');
+      if(ok) {
+        errEl.style.display = 'none';
+        document.getElementById('modalBack').classList.remove('show');
+        alert('Access granted — loading tech view');
+        // redirect if you have tech view page:
+        // window.location.href = '/tech.html';
+      } else {
+        errEl.style.display = 'block';
+        setTimeout(()=>errEl.style.display = 'none', 5000);
+      }
+    }
+    document.getElementById('unlockBtn').addEventListener('click', tryUnlock);
+    document.getElementById('passInput').addEventListener('keydown', e=>{
+      if(e.key === 'Enter') tryUnlock();
+    });
+    window.addEventListener('load', ()=>{
+      startSplash();
+      showModalAfter(4500);
+    });
+  </script>
 </body>
 </html>
