@@ -1,37 +1,53 @@
 
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-  font-family: sans-serif;
+body {
   background-color: black;
   color: white;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 2rem;
 }
 
-.background-video {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%; 
-  min-height: 100%;
+video#flyin {
+  max-width: 400px;
+  border-radius: 16px;
+  box-shadow: 0 0 24px rgba(0,255,255,0.2);
 }
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.6);
+#access-container input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100px;
+  text-align: center;
 }
 
-input {
-  padding: 10px;
-  font-size: 16px;
-  margin-top: 10px;
+#access-container button {
+  padding: 0.5rem 1rem;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.tabs {
+  margin-top: 2rem;
+}
+
+.tablink {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  margin: 0 5px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tabcontent {
+  margin-top: 2rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  text-align: left;
 }

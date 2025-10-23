@@ -3,20 +3,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daikin F4 Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daikin F4 Diagnostic Tool</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <video autoplay muted class="background-video">
-    <source src="flyin.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <div class="overlay">
+  <video autoplay muted playsinline id="flyin" src="flyin.mp4"></video>
+
+  <div id="access-container">
     <h1>Enter Access Code</h1>
-    <input type="password" id="code" placeholder="****" />
-    <button onclick="checkCode()">Enter</button>
+    <input type="password" id="access-code" placeholder="****" />
+    <button onclick="verifyCode()">Enter</button>
   </div>
+
+  <div id="main-content" style="display: none;">
+    <div class="tabs">
+      <button class="tablink" onclick="openTab('tech')">Tech View</button>
+      <button class="tablink" onclick="openTab('exec')">Exec Summary</button>
+    </div>
+
+    <div id="tech" class="tabcontent">
+      <h2>Technician Master Breakdown</h2>
+      <ul>
+        <li>⚠️ F4 pattern detected on <strong>OU3</strong></li>
+        <li>❄️ Indoor I-2, I-3, I-4 show subcooling deviations</li>
+        <li>🚰 I-2 suction 71°F, liquid 40.9°F</li>
+        <li>🛋️ I-5 suction 73.6°F, liquid 41.8°F</li>
+        <li>📄 Fault ~5–10 min after reset</li>
+        <li>🗓️ Logs: 6/6, 7/15, 8/1, 10/4–10/22</li>
+        <li>📷 FC images show inconsistent behavior</li>
+        <li>📌 Amp draw check I-3, I-4 next alert</li>
+        <li>🧪 Recommend FC board or sensor swap Loop 3</li>
+      </ul>
+    </div>
+
+    <div id="exec" class="tabcontent" style="display:none">
+      <h2>Executive Summary</h2>
+      <p>System 3 (OU3) = primary concern for repeat F4 faults. Tech logs show recurrence after resets, temp anomalies at I-2, I-3, I-4. Outdoor board & thermistor replaced.</p>
+      <p>Recommend monitoring suction/liquid temps, uploading fresh logs, and potential FC board swaps.</p>
+    </div>
+  </div>
+
   <script src="main.js"></script>
 </body>
 </html>
