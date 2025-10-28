@@ -1,0 +1,116 @@
+
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MyGuy • F4 Tech Dashboard</title>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head><body>
+<div class="container">
+<header><div class="brand"><div class="logo"></div><h1>MyGuy Field Support — F4 Diagnostic (Tech)</h1></div><div class="badge">© 2025 MyGuy.dev</div></header>
+<div id="gate" class="card">
+  <div class="grid grid-2">
+    <div>
+      <div class="flystage">
+        <div id="fly1" class="fly"></div>
+        <div id="fly2" class="fly2"></div>
+      </div>
+      <h2 class="hero-title">VRV Systems • Live Diagnostic</h2>
+      <p class="hero-sub">Enter pass code to access tech tools.</p>
+    </div>
+    <div class="card">
+      <label>Access Code</label>
+      <input id="code" class="input" type="password" placeholder="****"/>
+      <div style="height:8px"></div>
+      <button class="btn" onclick="unlock()">Enter</button>
+      <p id="gate-msg" style="color:var(--bad);display:none;margin-top:8px;">Access denied</p>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <div class="tabs">
+    <button class="tab active" data-tab="ingest">Ingest</button>
+    <button class="tab" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="charts">Charts</button>
+    <button class="tab" data-tab="f4">F4 Map</button>
+  </div>
+
+  <section id="tab-ingest" class="card" style="margin-top:16px">
+    <div class="grid grid-3">
+      <div>
+        <label>Upload CSV/ZIP (Service Checker)</label>
+        <input id="files" type="file" class="input" multiple/>
+        <div style="height:8px"></div>
+        <button class="btn" id="btn-process">Process Files</button>
+        <p id="ingest-status" class="hero-sub"></p>
+      </div>
+      <div>
+        <label>System</label>
+        <select id="system" class="select">
+          <option value="3">System 3</option>
+          <option value="4">System 4</option>
+          <option value="all" selected>All</option>
+        </select>
+        <div style="height:8px"></div>
+        <label>Date Filter (optional)</label>
+        <input id="date" class="input" placeholder="YYYY-MM-DD"/>
+      </div>
+      <div>
+        <label>Actions</label><br/>
+        <button class="btn secondary" id="btn-clear">Clear Session</button>
+        <div style="height:8px"></div>
+        <a class="btn" href="exec.html">Open Exec Summary →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-overview" class="card hidden" style="margin-top:16px">
+    <div class="kpis" id="kpis"></div>
+    <div style="height:12px"></div>
+    <table class="table">
+      <thead><tr><th>Source</th><th>F4 Count</th></tr></thead>
+      <tbody id="f4-body"></tbody>
+    </table>
+  </section>
+
+  <section id="tab-charts" class="card hidden" style="margin-top:16px">
+    <div id="chart-temps" style="height:340px"></div>
+  </section>
+
+  <section id="tab-f4" class="card hidden" style="margin-top:16px">
+    <h3>Suspect Focus (Based on Logs)</h3>
+    <ul>
+      <li>OU3 shows most frequent F4 over period.</li>
+      <li>Watch I‑2, I‑3, I‑4 for suction–liquid parity and Hz collapse.</li>
+      <li>Capture first 10 min after reset at 5‑sec logging.</li>
+      <li>Swap FC board / temp sensors to isolate rogue.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>Built for internal use • Do not distribute • MyGuy.dev</footer>
+</div>
+
+<script src="helpers.js"></script>
+<script>
+const PASS_TECH = "6363"; const PASS_EXEC="5280";
+function unlock(){const v=document.getElementById('code').value.trim();const msg=document.getElementById('gate-msg');
+  if(v===PASS_TECH||v===PASS_EXEC){document.getElementById('gate').classList.add('hidden');document.getElementById('app').classList.remove('hidden');}
+  else{msg.style.display='block';}}
+window.addEventListener('load',()=>{requestAnimationFrame(()=>{document.getElementById('fly1').classList.add('animate');document.getElementById('fly2').classList.add('animate');});});
+const tabs=document.querySelectorAll('.tab'); tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  document.querySelectorAll('[id^="tab-"]').forEach(s=>s.classList.add('hidden')); document.getElementById('tab-'+t.dataset.tab).classList.remove('hidden');}));
+let DATA=null;
+document.getElementById('btn-clear').onclick=()=>{DATA=null;document.getElementById('kpis').innerHTML='';document.getElementById('f4-body').innerHTML='';document.getElementById('ingest-status').textContent='Session cleared.';};
+document.getElementById('btn-process').onclick=async()=>{
+  const files=document.getElementById('files').files; if(!files.length){alert('Select ServiceChecker CSV/ZIP files');return;}
+  const status=document.getElementById('ingest-status'); status.textContent='Processing...';
+  const datasets=await ingestFiles(files,(i,total,name)=>{status.textContent=`Reading (${i}/${total}): ${name}`;});
+  DATA=analyze(datasets); status.textContent=`Ingested ${datasets.length} files • ${DATA.stats.points} rows`;
+  renderKpis(DATA.stats); try{localStorage.setItem('F4_STATS', JSON.stringify(DATA.stats));}catch(e){}
+  renderF4Table(DATA); drawCharts(DATA); document.querySelector('[data-tab="overview"]').click();
+};
+</script>
+</body></html>

@@ -1,0 +1,28 @@
+
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MyGuy • F4 Executive Summary</title>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head><body>
+<div class="container">
+<header><div class="brand"><div class="logo"></div><h1>Executive Summary — System 3/4 F4</h1></div><div class="badge">© 2025 MyGuy.dev</div></header>
+<section class="card"><h2>What Happened</h2><p>Outdoor <b>OU3</b> shows recurring <b>F4</b> events across multiple days, recurring ~<b>5–15 min</b> after restart under load.</p><div class="kpis" id="kpis"></div></section>
+<section class="grid grid-2" style="margin-top:16px">
+<div class="card"><h3>Remedial Actions</h3><ul><li>Replaced <b>A1P</b> board</li><li>Replaced <b>inverter fan boards</b></li><li>Replaced <b>compressor thermistors</b></li><li>Post-repair trending</li></ul></div>
+<div class="card"><h3>Next Steps</h3><ul><li>Focus Loop 3 (I‑2/I‑3/I‑4)</li><li>5‑sec startup capture</li><li>Watch inverter Hz collapse vs thermostat ON</li><li>Swap FC board / EEV as A/B test</li></ul></div>
+</section>
+<section class="card" style="margin-top:16px"><h3>Trend Preview</h3><div id="chart" style="height:360px"></div></section>
+<footer>Internal diagnostic summary for management.</footer>
+</div>
+<script>
+try{const raw=localStorage.getItem('F4_STATS'); if(raw){const s=JSON.parse(raw); const k=document.getElementById('kpis');
+k.innerHTML=`<div class='kpi'><div>Data Points</div><b>${s.points||0}</b></div>
+<div class='kpi'><div>F4 Events</div><b style="color:${s.f4Events>0?'var(--bad)':'var(--good)'}">${s.f4Events||0}</b></div>
+<div class='kpi'><div>Avg Suction °F</div><b>${s.avgSuction?s.avgSuction.toFixed(1):"—"}</b></div>
+<div class='kpi'><div>Avg Liquid °F</div><b>${s.avgLiquid?s.avgLiquid.toFixed(1):"—"}</b></div>`;}}catch(e){}
+Plotly.newPlot('chart',[{x:[1,2,3,4,5],y:[72,70,68,69,71],name:'Suction °F',mode:'lines'},
+                         {x:[1,2,3,4,5],y:[42,41,40,41,42],name:'Liquid °F',mode:'lines'}],
+  {title:'Sample Trend (illustrative)',paper_bgcolor:'#0f1a2e',plot_bgcolor:'#0f1a2e',font:{color:'#cfe5ff'},xaxis:{gridcolor:'#203656'},yaxis:{gridcolor:'#203656'}});
+</script>
+</body></html>
